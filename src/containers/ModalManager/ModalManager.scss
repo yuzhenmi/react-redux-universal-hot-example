@@ -1,0 +1,36 @@
+.modalManager {
+  z-index: 10;
+  .wrapper1 {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    .wrapper2 {
+      position: relative;
+      display: table;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      .wrapper3 {
+        display: table-cell;
+        vertical-align: middle;
+        > * {
+          position: relative;
+        }
+        .backdrop {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          display: block;
+          border: none;
+          outline: none;
+          padding: 0;
+        }
+      }
+    }
+  }
+}

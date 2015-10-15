@@ -1,9 +1,9 @@
 import { createStore as _createStore, applyMiddleware, compose } from 'redux';
-import createMiddleware from './middleware/clientMiddleware';
 import transitionMiddleware from './middleware/transitionMiddleware';
+import thunk from 'redux-thunk';
 
-export default function createStore(reduxReactRouter, getRoutes, createHistory, client, data) {
-  const middleware = [createMiddleware(client)];
+export default function createStore(reduxReactRouter, getRoutes, createHistory, data) {
+  const middleware = [thunk];
 
   if (__CLIENT__) {
     middleware.push(transitionMiddleware);
@@ -25,7 +25,6 @@ export default function createStore(reduxReactRouter, getRoutes, createHistory, 
 
   const reducer = require('./modules/reducer');
   const store = finalCreateStore(reducer, data);
-  store.client = client;
 
   if (__DEVELOPMENT__ && module.hot) {
     module.hot.accept('./modules/reducer', () => {

@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 export default class NotFound extends Component {
   render() {
+    const styles = require('./NotFound.scss');
     return (
-      <div className="container">
-        <h1>Doh! 404!</h1>
-        <p>These are <em>not</em> the droids you are looking for!</p>
+      <div className={styles.notFound}>
+        This page does not exist.
       </div>
     );
   }
