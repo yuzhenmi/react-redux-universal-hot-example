@@ -1,13 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { goToPreviousStep, goToNextStep, setRecipeName, setRecipeSummary,
-  submitNewRecipe, setRecipeStepMethod, addRecipeStepInputIngredient,
-  addRecipeStepOutputIngredient } as newRecipeActions from 'redux/modules/newRecipe';
+import * as newRecipeActions from 'redux/modules/newRecipe';
 import Immutable from 'immutable';
 import IngredientCard from 'components/IngredientCard';
 import SelectInputIngredientModal from 'containers/SelectInputIngredientModal';
 import SelectOutputIngredientModal from 'containers/SelectOutputIngredientModal';
-import { openModal, closeModal } as modalActions from 'redux/modules/modal';
+import * as modalActions from 'redux/modules/modal';
+import classNames from 'classnames';
 
 @connect(
   state => {
@@ -104,39 +103,55 @@ export default class NewRecipe extends Component {
     const styles = require('./NewRecipe.scss');
     return (
       <div className={styles.newRecipe}>
-        {currentStep === 1 && (
-          <div>
-            <label>What's the name of your recipe?</label>
-            <button type="button">Example</button>
-            <input type="text" value={recipeName} onChange={this.handleChangeRecipeName} />
-            <button type="button" onClick={this.handleClickGoToNextStep}>Next</button>
-          </div>
-        )}
-        {currentStep === 2 && (
-          <div>
-            <label>What can you say about your recipe?</label>
-            <button type="button">Example</button>
-            <textarea value={recipeSummary} onChange={this.handleChangeRecipeSummary} />
-            <button type="button" onClick={this.handleClickGoToPreviousStep}>Back</button>
-            <button type="button" onClick={this.handleClickGoToNextStep}>Next</button>
-          </div>
-        )}
-        {currentStep === 3 && (
-          <div>
-            <label>Let's write down the steps for your recipe!</label>
-            <button type="button">Example</button>
-            <ul>
-              {recipeSteps.map((recipeStep, recipeStepIndex) => {
-                const inputIngredients = recipeStep.get('inputIngredients');
-                const method = recipeStep.get('method');
-                const outputIngredients = recipeStep.get('outputIngredients');
-                return (
-                  <li key={recipeStepIndex}>
-                    <div>
-                      <h3>Step {recipeStepIndex + 1}</h3>
-                    </div>
-                    <div>
+        <div className={styles.background}/>
+        <div className={styles.stepIndicatorsContainer}>
+          <span className={classNames(styles.stepIndicator, {[styles.currentStepIndicator]: currentStep === 1})}>1</span>
+          <span className={classNames(styles.stepIndicator, {[styles.currentStepIndicator]: currentStep === 2})}>2</span>
+          <span className={classNames(styles.stepIndicator, {[styles.currentStepIndicator]: currentStep === 3})}>3</span>
+        </div>
+        <div className={styles.stepsContainer}>
+          {currentStep === 1 && (
+            <section className={classNames(styles.step, styles.step1)}>
+              <h3>What's the name of your recipe?</h3>
+              <div className={styles.example}>
+                <button type="button">Example</button>
+              </div>
+              <input type="text" className={styles.recipeName} value={recipeName} onChange={this.handleChangeRecipeName} />
+              <div className={styles.buttonsContainer}>
+                <button type="button" className={styles.next} onClick={this.handleClickGoToNextStep}>Next</button>
+              </div>
+            </section>
+          )}
+          {currentStep === 2 && (
+            <section className={classNames(styles.step, styles.step2)}>
+              <h3>What can you say about your recipe?</h3>
+              <div className={styles.example}>
+                <button type="button">Example</button>
+              </div>
+              <textarea className={styles.recipeSummary} rows={6} value={recipeSummary} onChange={this.handleChangeRecipeSummary} />
+              <div className={styles.buttonsContainer}>
+                <button type="button" className={styles.back} onClick={this.handleClickGoToPreviousStep}>Back</button>
+                <button type="button" className={styles.next} onClick={this.handleClickGoToNextStep}>Next</button>
+              </div>
+            </section>
+          )}
+          {currentStep === 3 && (
+            <section className={classNames(styles.step, styles.step3)}>
+              <h3>Let's write down the steps for your recipe!</h3>
+              <div className={styles.example}>
+                <button type="button">Example</button>
+              </div>
+              <ul className={styles.recipeStepsContainer}>
+                {recipeSteps.map((recipeStep, recipeStepIndex) => {
+                  const inputIngredients = recipeStep.get('inputIngredients');
+                  const method = recipeStep.get('method');
+                  const outputIngredients = recipeStep.get('outputIngredients');
+                  return (
+                    <li key={recipeStepIndex}>
                       <div>
+                        <h4>Step {recipeStepIndex + 1}</h4>
+                      </div>
+                      <div className={styles.inputIngredientsContainer}>
                         <label>Which ingredients do you need for this step?</label>
                         <ul>
                           {inputIngredients.map((inputIngredient, inputIngredientIndex) => {
@@ -176,15 +191,17 @@ export default class NewRecipe extends Component {
                           </li>
                         </ul>
                       </div>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-            <button type="button" onClick={this.handleClickGoToPreviousStep}>Back</button>
-            <button type="button">Save This Recipe</button>
-          </div>
-        )}
+                    </li>
+                  );
+                })}
+              </ul>
+              <div className={styles.buttonsContainer}>
+                <button type="button" className={styles.back} onClick={this.handleClickGoToPreviousStep}>Back</button>
+                <button type="button" className={styles.done}>Done!</button>
+              </div>
+            </section>
+          )}
+        </div>
       </div>
     );
   }

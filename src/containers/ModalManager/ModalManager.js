@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { closeModal } as modalActions from 'redux/modules/modal';
+import * as modalActions from 'redux/modules/modal';
 import Immutable from 'immutable';
 
 @connect(

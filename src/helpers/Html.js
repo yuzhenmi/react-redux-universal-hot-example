@@ -27,14 +27,13 @@ export default class Html extends Component {
     return (
       <html lang="en-us">
         <head>
-          <meta charSet="utf-8"/>
+          <meta charset="utf-8"/>
+          <meta name="viewport" content="width=device-width, initial-scale=1"/>
+          <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+
           {DocumentMeta.renderAsReact()}
 
-          <link rel="shortcut icon" href="/favicon.ico" />
-          <link href={cdn + 'twitter-bootstrap/3.3.5/css/bootstrap.css'}
-                media="screen, projection" rel="stylesheet" type="text/css" />
-          <link href={cdn + 'font-awesome/4.3.0/css/font-awesome.min.css'}
-                media="screen, projection" rel="stylesheet" type="text/css" />
+          <link rel="shortcut icon" href="/favicon.ico"/>
 
           {/* styles (will be present only in production with webpack extract text plugin) */}
           {Object.keys(assets.styles).map((style, key) =>
@@ -44,7 +43,7 @@ export default class Html extends Component {
         </head>
         <body>
           <div id="content" dangerouslySetInnerHTML={{__html: content}}/>
-          <script dangerouslySetInnerHTML={{__html: `window.__data=${serialize(store.getState())};`}} />
+          <script dangerouslySetInnerHTML={{__html: `window.__data=${serialize(store.getState())};`}}/>
           <script src={assets.javascript.main}/>
         </body>
       </html>

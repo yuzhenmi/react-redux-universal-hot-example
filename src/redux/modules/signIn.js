@@ -55,7 +55,7 @@ export function signIn(email, password) {
     dispatch({ type: SIGN_IN, email, password });
     YumferClient.signIn({ email, password })
       .then(data => {
-        const { authToken } = data;
+        const authToken = data.jwt;
         dispatch({ type: SIGN_IN_SUCCESS, authToken });
       })
       .then(error => {

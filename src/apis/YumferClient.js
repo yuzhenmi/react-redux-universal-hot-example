@@ -1,5 +1,8 @@
 import * as request from 'utils/request';
-import cookies from 'cookies-js';
+let cookies;
+if (__CLIENT__) {
+  cookies = require('js-cookie');
+}
 
 const BASE_URL = 'http://localhost:4000';
 
@@ -8,7 +11,7 @@ function getAuthToken() {
     return null;
   }
 
-  return cookies.get('aT') || 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0NDQ4ODQzNzksImF1ZCI6bnVsbCwic3ViIjoxfQ.KfmGEFCy6Ndqm5ncINY6Zyc1OYQGQWVzDbaUtaL8ihs';
+  return cookies.get('aT');
 }
 
 export default {
@@ -25,6 +28,13 @@ export default {
     return request.post(url, {
       payload: { name, summary, steps },
       headers: { 'Authorization': `Bearer ${getAuthToken()}` }
+    });
+  },
+
+  signIn: function signIn({ email, password }) {
+    const url = `${BASE_URL}/v1/auth/auth_token`;
+    return request.post(url, {
+      payload: { auth: { email, password } }
     });
   }
 };

@@ -19,12 +19,12 @@ function attachQueryStringToUrl(url, queryString) {
   return url + (queryString && queryString.length > 0 ? '?' + queryString : '');
 }
 
-export function get(url, {params: params, headers: headers} = {params: {}, headers: {}}) {
+export function get(url, { params, headers }) {
   return new Promise((resolve, reject) => {
     request
-      .get(attachQueryStringToUrl(url, formatQueryString(params)))
+      .get(attachQueryStringToUrl(url, formatQueryString(params || {})))
       .set('Accept', 'application/json')
-      .set(headers)
+      .set(headers || {})
       .end((err, resp) => {
         if (err) {
           reject(err, resp);
@@ -35,13 +35,13 @@ export function get(url, {params: params, headers: headers} = {params: {}, heade
   });
 }
 
-export function post(url, {payload: payload, params: params, headers: headers} = {payload: null, params: {}, headers: {}}) {
+export function post(url, { payload, params, headers }) {
   return new Promise((resolve, reject) => {
     request
-      .post(attachQueryStringToUrl(url, formatQueryString(params)))
-      .send(payload)
+      .post(attachQueryStringToUrl(url, formatQueryString(params || {})))
+      .send(payload || null)
       .set('Accept', 'application/json')
-      .set(headers)
+      .set(headers || {})
       .end((err, resp) => {
         if (err) {
           reject(err, resp);
@@ -52,13 +52,13 @@ export function post(url, {payload: payload, params: params, headers: headers} =
   });
 }
 
-export function put(url, {payload: payload, params: params, headers: headers} = {payload: null, params: {}, headers: {}}) {
+export function put(url, { payload, params, headers }) {
   return new Promise((resolve, reject) => {
     request
-      .put(attachQueryStringToUrl(url, formatQueryString(params)))
-      .send(payload)
+      .put(attachQueryStringToUrl(url, formatQueryString(params || {})))
+      .send(payload || null)
       .set('Accept', 'application/json')
-      .set(headers)
+      .set(headers || {})
       .end((err, resp) => {
         if (err) {
           reject(err, resp);
@@ -69,13 +69,13 @@ export function put(url, {payload: payload, params: params, headers: headers} = 
   });
 }
 
-export function del(url, {payload: payload, params: params, headers: headers} = {payload: null, params: {}, headers: {}}) {
+export function del(url, { payload, params, headers }) {
   return new Promise((resolve, reject) => {
     request
-      .del(attachQueryStringToUrl(url, formatQueryString(params)))
-      .send(payload)
+      .del(attachQueryStringToUrl(url, formatQueryString(params || {})))
+      .send(payload || {})
       .set('Accept', 'application/json')
-      .set(headers)
+      .set(headers || {})
       .end((err, resp) => {
         if (err) {
           reject(err, resp);

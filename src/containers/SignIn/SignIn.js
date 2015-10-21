@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { setEmail, setPassword, signIn } as signInActions from 'redux/modules/signInActions';
+import * as signInActions from 'redux/modules/signIn';
 
 @connect(
   state => {
     return {
-      email: state.signIn.email,
-      password: state.signIn.password,
-      isSigningIn: state.signIn.isSigningIn
+      email: state.signIn.get('email'),
+      password: state.signIn.get('password'),
+      isSigningIn: state.signIn.get('isSigningIn')
     };
   },
   {
@@ -18,8 +18,12 @@ import { setEmail, setPassword, signIn } as signInActions from 'redux/modules/si
 )
 export default class SignIn extends Component {
   static propTypes = {
-    setEmail: propTypes.func.isRequired,
-    setPassword: propTypes.func.isRequired,
+    email: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+    isSigningIn: PropTypes.bool.isRequired,
+
+    setEmail: PropTypes.func.isRequired,
+    setPassword: PropTypes.func.isRequired,
     signIn: PropTypes.func.isRequired
   }
 
@@ -47,10 +51,10 @@ export default class SignIn extends Component {
         <h2>Sign In</h2>
         <form>
           <div>
-            <input type="text" placeholder="Email" value={email} onChange={this.handleChangeEmail} />
+            <input type="text" name="email" placeholder="Email" value={email} onChange={this.handleChangeEmail} />
           </div>
           <div>
-            <input type="password" placeholder="Password" value={password} onChange={this.handleChangePassword} />
+            <input type="password" name="password" placeholder="Password" value={password} onChange={this.handleChangePassword} />
           </div>
           <div>
             <button type="submit" onClick={this.handleClickSubmit} disabled={isSigningIn}>Submit</button>

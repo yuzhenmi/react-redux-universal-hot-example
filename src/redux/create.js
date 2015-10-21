@@ -1,9 +1,10 @@
 import { createStore as _createStore, applyMiddleware, compose } from 'redux';
 import transitionMiddleware from './middleware/transitionMiddleware';
+import cookieMiddlewareFactory from './middleware/cookieMiddlewareFactory';
 import thunk from 'redux-thunk';
 
-export default function createStore(reduxReactRouter, getRoutes, createHistory, data) {
-  const middleware = [thunk];
+export default function createStore(reduxReactRouter, getRoutes, createHistory, cookies = {}, data) {
+  const middleware = [thunk, cookieMiddlewareFactory(cookies)];
 
   if (__CLIENT__) {
     middleware.push(transitionMiddleware);

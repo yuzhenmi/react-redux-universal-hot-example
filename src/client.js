@@ -8,11 +8,12 @@ import createHistory from 'history/lib/createBrowserHistory';
 import createStore from './redux/create';
 import {Provider} from 'react-redux';
 import {reduxReactRouter, ReduxRouter} from 'redux-router';
+import cookies from 'js-cookie';
 
 import getRoutes from './routes';
 
 const dest = document.getElementById('content');
-const store = createStore(reduxReactRouter, null, createHistory, window.__data);
+const store = createStore(reduxReactRouter, null, createHistory, cookies, window.__data);
 
 const component = (
   <Provider store={store} key="provider">

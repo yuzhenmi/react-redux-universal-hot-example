@@ -11,6 +11,7 @@ import getDataDependencies from './helpers/getDataDependencies';
 import Html from './helpers/Html';
 import PrettyError from 'pretty-error';
 import http from 'http';
+import cookieParser from 'cookie-parser';
 
 import {ReduxRouter} from 'redux-router';
 import createHistory from 'history/lib/createMemoryHistory';
@@ -19,6 +20,7 @@ import {Provider} from 'react-redux';
 import qs from 'query-string';
 import getRoutes from './routes';
 import getStatusFromRoutes from './helpers/getStatusFromRoutes';
+import Cookies from 'cookies';
 
 const pretty = new PrettyError();
 const app = new Express();
@@ -32,11 +34,7 @@ app.use(compression());
 app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')));
 
 app.use(require('serve-static')(path.join(__dirname, '..', 'static')));
-
-// Proxy to API server
-app.use('/api', (req, res) => {
-  proxy.web(req, res);
-});
+app.use(cookieParser());
 
 // added the error handling to avoid https://github.com/nodejitsu/node-http-proxy/issues/527
 proxy.on('error', (error, req, res) => {
@@ -57,7 +55,7 @@ app.use((req, res) => {
     webpackIsomorphicTools.refresh();
   }
 
-  const store = createStore(reduxReactRouter, getRoutes, createHistory);
+  const store = createStore(reduxReactRouter, getRoutes, createHistory, new Cookies(req, res));
 
   function hydrateOnClient() {
     res.send('<!doctype html>\n' +
