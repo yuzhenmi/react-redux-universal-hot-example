@@ -153,41 +153,45 @@ export default class NewRecipe extends Component {
                       </div>
                       <div className={styles.inputIngredientsContainer}>
                         <label>Which ingredients do you need for this step?</label>
-                        <ul>
+                        <ul className={styles.inputIngredientsList}>
                           {inputIngredients.map((inputIngredient, inputIngredientIndex) => {
                             const name = inputIngredient.get('name');
                             const portionValue = inputIngredient.get('portionValue');
                             const portionUnit = inputIngredient.get('portionUnit');
                             return (
-                              <li key={inputIngredientIndex}>
+                              <li className={styles.inputIngredientContainer} key={inputIngredientIndex}>
                                 <IngredientCard name={name} portionValue={portionValue} portionUnit={portionUnit} />
                               </li>
                             );
                           })}
-                          <li>
-                            <button type="button" onClick={this.handleClickAddRecipeStepInputIngredient.bind(this, recipeStepIndex)}>+</button>
+                          <li className={styles.inputIngredientContainer}>
+                            <button type="button" className={styles.addInputIngredient} onClick={this.handleClickAddRecipeStepInputIngredient.bind(this, recipeStepIndex)}>
+                              <span>+</span>
+                            </button>
                           </li>
                         </ul>
                       </div>
-                      <div>
+                      <div className={styles.methodContainer}>
                         <label>What do you do with the ingredients?</label>
-                        <input type="text" value={method} onChange={this.handleChangeRecipeStepMethod.bind(this, recipeStepIndex)} />
+                        <input type="text" className={styles.method} value={method} onChange={this.handleChangeRecipeStepMethod.bind(this, recipeStepIndex)} />
                       </div>
-                      <div>
+                      <div className={styles.outputIngredientsContainer}>
                         <label>What gets produced from this step?</label>
-                        <ul>
+                        <ul className={styles.outputIngredientsList}>
                           {outputIngredients.map((outputIngredient, outputIngredientIndex) => {
                             const name = outputIngredient.get('name');
                             const portionValue = outputIngredient.get('portionValue');
                             const portionUnit = outputIngredient.get('portionUnit');
                             return (
-                              <li key={outputIngredientIndex}>
+                              <li className={styles.outputIngredientContainer} key={outputIngredientIndex}>
                                 <IngredientCard name={name} portionValue={portionValue} portionUnit={portionUnit} />
                               </li>
                             );
                           })}
-                          <li>
-                            <button type="button" onClick={this.handleClickAddRecipeStepOutputIngredient.bind(this, recipeStepIndex)}>+</button>
+                          <li className={styles.outputIngredientContainer}>
+                            <button type="button" className={styles.addOutputIngredient} onClick={this.handleClickAddRecipeStepOutputIngredient.bind(this, recipeStepIndex)}>
+                              <span>+</span>
+                            </button>
                           </li>
                         </ul>
                       </div>
