@@ -7,6 +7,10 @@ import SelectInputIngredientModal from 'containers/SelectInputIngredientModal';
 import SelectOutputIngredientModal from 'containers/SelectOutputIngredientModal';
 import * as modalActions from 'redux/modules/modal';
 import classNames from 'classnames';
+let sweetAlert;
+if (__CLIENT__) {
+  sweetAlert = require('sweetalert');
+}
 
 @connect(
   state => {
@@ -55,6 +59,22 @@ export default class NewRecipe extends Component {
   }
 
   handleClickGoToNextStep = () => {
+    switch (this.props.currentStep) {
+      case 1:
+        if (this.props.recipeName.trim().length === 0) {
+          sweetAlert('Oops...', 'Enter a name for your recipe!', 'error');
+          return;
+        }
+        break;
+      case 2:
+        if (this.props.recipeSummary.trim().length === 0) {
+          sweetAlert('Oops...', 'Say something about your recipe!', 'error');
+          return;
+        }
+        break;
+      default:
+    }
+
     const {goToNextStep} = this.props;
     goToNextStep();
   }
@@ -147,7 +167,7 @@ export default class NewRecipe extends Component {
                   const method = recipeStep.get('method');
                   const outputIngredients = recipeStep.get('outputIngredients');
                   return (
-                    <li key={recipeStepIndex}>
+                    <li className={styles.recipeStepContainer} key={recipeStepIndex}>
                       <div>
                         <h4>Step {recipeStepIndex + 1}</h4>
                       </div>
@@ -173,7 +193,7 @@ export default class NewRecipe extends Component {
                       </div>
                       <div className={styles.methodContainer}>
                         <label>What do you do with the ingredients?</label>
-                        <input type="text" className={styles.method} value={method} onChange={this.handleChangeRecipeStepMethod.bind(this, recipeStepIndex)} />
+                        <input type="text" className={styles.method} placeholder="e.g. Slice" value={method} onChange={this.handleChangeRecipeStepMethod.bind(this, recipeStepIndex)} />
                       </div>
                       <div className={styles.outputIngredientsContainer}>
                         <label>What gets produced from this step?</label>
@@ -198,6 +218,9 @@ export default class NewRecipe extends Component {
                     </li>
                   );
                 })}
+                <div className={styles.addAnotherStepContainer}>
+                  <button type="button" className={styles.addAnotherStep}>Add another step</button>
+                </div>
               </ul>
               <div className={styles.buttonsContainer}>
                 <button type="button" className={styles.back} onClick={this.handleClickGoToPreviousStep}>Back</button>

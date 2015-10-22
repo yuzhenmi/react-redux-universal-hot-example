@@ -6,12 +6,9 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: #edeaff;
+    background-color: #fff;
   }
   .stepIndicatorsContainer {
-    $outline-color: #333;
-    $selected-color: #ec3434;
-    $unselected-color: #eee;
     margin-top: 0.5em;
     margin-bottom: 3em;
     display: flex;
@@ -19,7 +16,7 @@
     position: relative;
     &::before {
       content: '';
-      border-top: 1px solid $outline-color;
+      border-top: 1px solid #999;
       position: absolute;
       left: 0;
       right: 0;
@@ -28,18 +25,18 @@
     }
     .stepIndicator {
       position: relative;
-      background-color: $unselected-color;
-      color: $outline-color;
+      background-color: #eee;
+      color: #666;
       width: 1.7em;
       height: 1.7em;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 999em;
-      border: 1px solid $outline-color;
+      border: 1px solid #999;
       font-size: 1.2em;
       &.currentStepIndicator {
-        background-color: $selected-color;
+        background-color: #F25F3D;
         color: #fff;
         font-weight: 600;
       }
@@ -50,7 +47,7 @@
     .step {
       h3 {
         font-size: 1.1em;
-        color: #333;
+        color: #666;
         margin-bottom: 0.6em;
         line-height: 1.5;
       }
@@ -61,7 +58,7 @@
           border: none;
           background-color: transparent;
           font-size: 0.95em;
-          color: #134bb6;
+          color: #4B99FF;
           text-decoration: underline;
         }
       }
@@ -74,6 +71,9 @@
           background-color: #4383c5;
           border: none;
           color: #fff;
+          &.back {
+            background-color: #999;
+          }
         }
       }
     }
@@ -86,8 +86,8 @@
         width: 100%;
         font-size: 1.2em;
         padding: 0.4em;
-        border: 1px solid #666;
-        color: #000;
+        border: 1px solid #999;
+        color: #666;
         margin-bottom: 4em;
       }
       .buttonsContainer {
@@ -101,8 +101,8 @@
         max-width: 100%;
         font-size: 0.95em;
         padding: 0.4em;
-        border: 1px solid #666;
-        color: #000;
+        border: 1px solid #999;
+        color: #666;
         margin-bottom: 3em;
       }
       .buttonsContainer {
@@ -113,80 +113,97 @@
       .recipeStepsContainer {
         list-style: none;
         margin: 0 0 2.5em;
-        padding: 1em;
+        padding: 0;
         background-color: #fff;
-        color: #333;
-        h4 {
-          margin: 0 0 1.5em;
-          font-size: 1em;
-          padding-bottom: 0.5em;
-          border-bottom: 1px solid #666;
-        }
-        .inputIngredientsContainer, .methodContainer, .outputIngredientsContainer {
-          label {
-            display: block;
-            font-size: 0.9em;
-            margin-bottom:0.8em;
-            line-height: 1.4;
-          }
-        }
-        .inputIngredientsContainer {
+        color: #666;
+        .recipeStepContainer {
+          border-left: 3px solid #ccc;
+          padding: 0.5em 1em;
           margin-bottom: 1.5em;
-          .inputIngredientsList {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            .inputIngredientContainer {
-              display: flex;
-              .addInputIngredient {
-                display: inline-block;
-                width: 5em;
-                height: 5em;
-                background-color: #fff;
-                border: 1px solid #666;
-                color: #333;
-                span {
-                  font-size: 3.6em;
-                }
-              }
-            }
-          }
-        }
-        .methodContainer {
-          margin-bottom: 1.5em;
-          .method {
-            display: block;
-            width: 100%;
+          h4 {
+            margin: 0 0 1.5em;
             font-size: 1em;
-            padding: 0.4em;
+            padding-bottom: 0.5em;
+            border-bottom: 1px solid #999;
           }
-        }
-        .outputIngredientsContainer {
-          .outputIngredientsList {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            .outputIngredientContainer {
-              display: flex;
-              .addOutputIngredient {
-                display: inline-block;
-                width: 5em;
-                height: 5em;
-                background-color: #fff;
-                border: 1px solid #666;
-                color: #333;
-                span {
-                  font-size: 3.6em;
+          .inputIngredientsContainer, .methodContainer, .outputIngredientsContainer {
+            label {
+              display: block;
+              font-size: 0.9em;
+              margin-bottom: 0.8em;
+              line-height: 1.4;
+            }
+          }
+          .inputIngredientsContainer {
+            margin-bottom: 1.5em;
+            .inputIngredientsList {
+              list-style: none;
+              margin: 0;
+              padding: 0;
+              .inputIngredientContainer {
+                display: flex;
+                .addInputIngredient {
+                  display: inline-block;
+                  width: 5em;
+                  height: 5em;
+                  background-color: #fff;
+                  border: 1px solid #999;
+                  color: #666;
+                  span {
+                    font-size: 3.6em;
+                  }
                 }
               }
             }
+          }
+          .methodContainer {
+            margin-bottom: 1.5em;
+            .method {
+              display: block;
+              width: 100%;
+              font-size: 1em;
+              padding: 0.4em;
+            }
+          }
+          .outputIngredientsContainer {
+            .outputIngredientsList {
+              list-style: none;
+              margin: 0;
+              padding: 0;
+              .outputIngredientContainer {
+                display: flex;
+                .addOutputIngredient {
+                  display: inline-block;
+                  width: 5em;
+                  height: 5em;
+                  background-color: #fff;
+                  border: 1px solid #999;
+                  color: #666;
+                  span {
+                    font-size: 3.6em;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .addAnotherStepContainer {
+          display: flex;
+          justify-content: center;
+          .addAnotherStep {
+            display: block;
+            padding: 0.4em 1.6em;
+            font-size: 1.2em;
+            background-color: #4383c5;
+            border: none;
+            color: #fff;
           }
         }
       }
       .buttonsContainer {
         justify-content: space-between;
         .done {
-          background-color: #23af2d;
+          background-color: #40AD48;
         }
       }
     }

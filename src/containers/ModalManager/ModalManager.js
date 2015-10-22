@@ -35,13 +35,9 @@ export default class ModalManager extends Component {
           const ModalComponent = modal.get('component');
           const props = modal.get('props');
           return (
-            <div key={modalIndex} className={styles.wrapper1}>
-              <div className={styles.wrapper2}>
-                <div className={styles.wrapper3}>
-                  <button className={styles.backdrop} onClick={this.handleClickBackdrop.bind(this, modalId)}/>
-                  <ModalComponent {...props} modalId={modalId}/>
-                </div>
-              </div>
+            <div key={modalIndex} className={styles.wrapper}>
+              <button className={styles.backdrop} onClick={this.handleClickBackdrop.bind(this, modalId)}/>
+              <ModalComponent {...props} modalId={modalId}/>
             </div>
           );
         })}

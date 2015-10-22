@@ -1,0 +1,89 @@
+.selectInputIngredientModal {
+  position: relative;
+  width: 100%;
+  margin: 0.5em;
+  background-color: #fff;
+  box-shadow: 0 0 1.6em 0.2em rgba(0, 0, 0, 0.3);
+  .heading {
+    background-color: #F25F3D;
+    padding: 0.75em 1em;
+    color: #fff;
+    position: relative;
+    h2 {
+      margin: 0;
+      font-size: 1.2em;
+    }
+    .closeModal {
+      position: absolute;
+      top: 0.12em;
+      right: 0.3em;
+      padding: 0;
+      background-color: transparent;
+      border: none;
+      color: #fff;
+      font-size: 1.6em;
+      padding: 0.2em;
+    }
+  }
+  .body {
+    padding: 1.5em 1em;
+    .searchContainer {
+      label {
+        display: block;
+        font-size: 1em;
+        margin-bottom: 0.4em;
+        line-height: 1.4;
+        color: #666;
+      }
+      .searchTerm {
+        display: block;
+        width: 100%;
+        font-size: 1em;
+        padding: 0.4em;
+        border: 1px solid #999;
+        color: #666;
+      }
+    }
+    .searchResultsContainer {
+      list-style: none;
+      margin: 0 0 1.5em;
+      padding: 0;
+      .searchResultContainer {
+        margin-top: 0.75em;
+      }
+    }
+    .portionContainer {
+      margin-bottom: 1.5em;
+      label {
+        display: block;
+        font-size: 1em;
+        margin-bottom: 0.4em;
+        line-height: 1.4;
+        color: #666;
+      }
+      .portionValue, .portionUnit {
+        display: block;
+        width: 100%;
+        font-size: 1em;
+        padding: 0.4em;
+        border: 1px solid #999;
+        color: #666;
+      }
+      .portionValue {
+        border-bottom: none;
+      }
+    }
+    .actionsContainer {
+      display: flex;
+      justify-content: center;
+      .submit {
+        display: block;
+        padding: 0.4em 1.6em;
+        font-size: 1.2em;
+        background-color: #40AD48;
+        border: none;
+        color: #fff;
+      }
+    }
+  }
+}

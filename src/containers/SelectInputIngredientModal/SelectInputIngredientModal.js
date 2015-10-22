@@ -3,6 +3,12 @@ import lodash from 'lodash';
 import { signOut } from 'redux/modules/currentUser';
 import YumferClient from 'apis/YumferClient';
 import Immutable from 'immutable';
+import { connect } from 'react-redux';
+import * as modalActions from 'redux/modules/modal';
+let sweetAlert;
+if (__CLIENT__) {
+  sweetAlert = require('sweetalert');
+}
 
 const initialState = {
   searchTerm: '',
@@ -13,9 +19,18 @@ const initialState = {
   matchingIngredients: []
 };
 
+@connect(
+  null,
+  {
+    closeModal: modalActions.closeModal
+  }
+)
 export default class SelectInputIngredientModal extends Component {
   static propTypes = {
-    onSelect: PropTypes.func.isRequired
+    modalId: PropTypes.string.isRequired,
+    onSelect: PropTypes.func.isRequired,
+
+    closeModal: PropTypes.func.isRequired
   }
 
   state = {...initialState}
@@ -33,6 +48,11 @@ export default class SelectInputIngredientModal extends Component {
         }
       });
   }, 500)
+
+  handleClickCloseModal = () => {
+    const { modalId, closeModal } = this.props;
+    closeModal(modalId);
+  }
 
   handleSelectIngredient = (ingredient) => {
     this.setState({ selectedIngredient: ingredient });
@@ -58,8 +78,12 @@ export default class SelectInputIngredientModal extends Component {
 
   handleSubmit = () => {
     const { portionValue, portionUnit, selectedIngredient } = this.state;
-    if (!selectedIngredient || !portionValue || !portionUnit) {
-      alert('Please make sure to choose an ingredient and enter the portion value and unit.');
+    if (!selectedIngredient) {
+      sweetAlert('Oops...', 'You didn\'t select an ingredient yet!', 'error');
+      return;
+    }
+    if (!portionValue || !portionUnit) {
+      sweetAlert('Oops...', 'Enter the quantity needed as numerical value and unit!', 'error');
       return;
     }
 
@@ -76,47 +100,54 @@ export default class SelectInputIngredientModal extends Component {
     trimmedSearchTerm = trimmedSearchTerm.charAt(0).toUpperCase() + trimmedSearchTerm.slice(1);
     let searchTermHasExactMatch = false;
     return (
-      <div className={styles.selectInputIngredientModal}>
-        <div>
-          <input type="text" placeholder="e.g. Tomato" onChange={this.handleChangeSearchTerm} />
+      <section className={styles.selectInputIngredientModal}>
+        <div className={styles.heading}>
+          <h2>Add an ingredient</h2>
+          <button type="button" className={styles.closeModal} onClick={this.handleClickCloseModal}>&#215;</button>
         </div>
-        <ul>
-          {matchingIngredients.map((ingredient, ingredientIndex) => {
-            const name = ingredient.name;
-            if (name.toLowerCase() === trimmedSearchTerm.toLowerCase()) {
-              searchTermHasExactMatch = true;
-            }
-            return (
-              <li key={ingredientIndex}>
-                {name === selectedIngredientName && (
-                  <button type="button" className={styles.selected} onClick={this.handleSelectIngredient.bind(null, ingredient)}>{name}</button>
+        <div className={styles.body}>
+          <div className={styles.searchContainer}>
+            <label>I need...</label>
+            <input type="text" className={styles.searchTerm} placeholder="Potato, Sugar, Milk, etc." onChange={this.handleChangeSearchTerm} />
+          </div>
+          <ul className={styles.searchResultsContainer}>
+            {matchingIngredients.map((ingredient, ingredientIndex) => {
+              const name = ingredient.name;
+              if (name.toLowerCase() === trimmedSearchTerm.toLowerCase()) {
+                searchTermHasExactMatch = true;
+              }
+              return (
+                <li className={styles.searchResultContainer} key={ingredientIndex}>
+                  {name === selectedIngredientName && (
+                    <button type="button" className={styles.selected} onClick={this.handleSelectIngredient.bind(null, ingredient)}>{name}</button>
+                  )}
+                  {name === selectedIngredientName || (
+                    <button type="button" onClick={this.handleSelectIngredient.bind(null, ingredient)}>{name}</button>
+                  )}
+                </li>
+              );
+            })}
+            {trimmedSearchTerm.length > 0 && !searchTermHasExactMatch && (
+              <li className={styles.searchResultContainer}>
+                {trimmedSearchTerm.toLowerCase() === selectedIngredientName.toLowerCase() && (
+                  <button type="button" className={styles.selected} onClick={this.handleSelectIngredient.bind(null, { name: trimmedSearchTerm })}>{trimmedSearchTerm}</button>
                 )}
-                {name === selectedIngredientName || (
-                  <button type="button" onClick={this.handleSelectIngredient.bind(null, ingredient)}>{name}</button>
+                {trimmedSearchTerm.toLowerCase() === selectedIngredientName.toLowerCase() || (
+                  <button type="button" onClick={this.handleSelectIngredient.bind(null, { name: trimmedSearchTerm })}>{trimmedSearchTerm}</button>
                 )}
               </li>
-            );
-          })}
-          {trimmedSearchTerm.length > 0 && !searchTermHasExactMatch && (
-            <li>
-              {trimmedSearchTerm.toLowerCase() === selectedIngredientName.toLowerCase() && (
-                <button type="button" className={styles.selected} onClick={this.handleSelectIngredient.bind(null, { name: trimmedSearchTerm })}>{trimmedSearchTerm}</button>
-              )}
-              {trimmedSearchTerm.toLowerCase() === selectedIngredientName.toLowerCase() || (
-                <button type="button" onClick={this.handleSelectIngredient.bind(null, { name: trimmedSearchTerm })}>{trimmedSearchTerm}</button>
-              )}
-            </li>
-          )}
-        </ul>
-        <div>
-          <label>How much of this do we need?</label>
-          <input type="text" placeholder="e.g. 1" onChange={this.handleChangePortionValue} />
-          <input type="text" placeholder="e.g. lb" onChange={this.handleChangePortionUnit} />
+            )}
+          </ul>
+          <div className={styles.portionContainer}>
+            <label>In what quantity?</label>
+            <input type="text" className={styles.portionValue} placeholder="1, 3, 500, etc." onChange={this.handleChangePortionValue} />
+            <input type="text" className={styles.portionUnit} placeholder="lb, teaspoons, mL, etc." onChange={this.handleChangePortionUnit} />
+          </div>
+          <div className={styles.actionsContainer}>
+            <button type="button" className={styles.submit} onClick={this.handleSubmit}>Submit</button>
+          </div>
         </div>
-        <div>
-          <button type="button" onClick={this.handleSubmit}>Submit</button>
-        </div>
-      </div>
+      </section>
     );
   }
 }

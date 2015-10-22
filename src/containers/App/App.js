@@ -5,6 +5,9 @@ import ModalManager from 'containers/ModalManager';
 import { connect } from 'react-redux';
 import { pushState } from 'redux-router';
 import * as currentUserActions from 'redux/modules/currentUser';
+if (__CLIENT__) {
+  console.log(require('../../../node_modules/sweetalert/dev/sweetalert.scss'));
+}
 
 @connect(
   state => {
