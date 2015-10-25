@@ -1,0 +1,51 @@
+.ingredientCard {
+  border: 1px solid #999;
+  width: 5em;
+  text-align: left;
+  color: #666;
+  .imageContainer {
+    height: 5em;
+    background-color: #fff;
+    color: #666;
+    position: relative;
+    .image {
+      width: 100%;
+      height: 100%;
+      background-color: #fff;
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(100, 100, 100, 0.6);
+      display: flex;
+      align-items: center;
+      .noImageText {
+        color: #ccc;
+        width: 100%;
+        text-align: center;
+        font-size: 2.4em;
+      }
+    }
+  }
+  .nameAndPortionContainer {
+    padding: 0.3em 0.4em;
+    border-top: 1px solid #ccc;
+    .name {
+      font-size: 0.85em;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+    .portionContainer {
+      margin-top: 0.2em;
+      font-size: 0.75em;
+      .portionValue {
+        margin-right: 0.2em;
+      }
+      .portionUnit {
+      }
+    }
+  }
+}

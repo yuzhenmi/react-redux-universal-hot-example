@@ -30,6 +30,10 @@ if (__CLIENT__) {
     setRecipeStepMethod: newRecipeActions.setRecipeStepMethod,
     addRecipeStepInputIngredient: newRecipeActions.addRecipeStepInputIngredient,
     addRecipeStepOutputIngredient: newRecipeActions.addRecipeStepOutputIngredient,
+    addRecipeStep: newRecipeActions.addRecipeStep,
+    removeRecipeStep: newRecipeActions.removeRecipeStep,
+    removeRecipeStepInputIngredient: newRecipeActions.removeRecipeStepInputIngredient,
+    removeRecipeStepOutputIngredient: newRecipeActions.removeRecipeStepOutputIngredient,
     openModal: modalActions.openModal,
     closeModal: modalActions.closeModal
   }
@@ -49,6 +53,10 @@ export default class NewRecipe extends Component {
     setRecipeStepMethod: PropTypes.func.isRequired,
     addRecipeStepInputIngredient: PropTypes.func.isRequired,
     addRecipeStepOutputIngredient: PropTypes.func.isRequired,
+    addRecipeStep: PropTypes.func.isRequired,
+    removeRecipeStep: PropTypes.func.isRequired,
+    removeRecipeStepInputIngredient: PropTypes.func.isRequired,
+    removeRecipeStepOutputIngredient: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
     closeModal: PropTypes.func.isRequired
   };
@@ -118,6 +126,58 @@ export default class NewRecipe extends Component {
     addRecipeStepOutputIngredient(recipeStepIndex, outputIngredient);
   }
 
+  handleClickAddRecipeStep = () => {
+    const {addRecipeStep} = this.props;
+    addRecipeStep();
+  }
+
+  handleClickRemoveRecipeStep = (recipeStepIndex) => {
+    const {removeRecipeStep} = this.props;
+    sweetAlert({
+      title: `Remove Step ${recipeStepIndex + 1}?`,
+      text: 'The entire step will be removed! Please double check to make sure your other steps are not using ingredients produced from this step.',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#DD6B55',
+      confirmButtonText: 'Remove it!',
+      closeOnConfirm: true
+    }, () => {
+      removeRecipeStep(recipeStepIndex);
+    });
+  }
+
+  handleClickRemoveInputIngredient = (recipeStepIndex, inputIngredientIndex) => {
+    const {removeRecipeStepInputIngredient} = this.props;
+    const inputIngredient = this.props.recipeSteps.get(recipeStepIndex).get('inputIngredients').get(inputIngredientIndex);
+    sweetAlert({
+      title: `Remove ${inputIngredient.get('name')}?`,
+      text: 'Please confirm!',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#DD6B55',
+      confirmButtonText: 'Remove it!',
+      closeOnConfirm: true
+    }, () => {
+      removeRecipeStepInputIngredient(recipeStepIndex, inputIngredientIndex);
+    });
+  }
+
+  handleClickRemoveOutputIngredient = (recipeStepIndex, outputIngredientIndex) => {
+    const {removeRecipeStepOutputIngredient} = this.props;
+    const outputIngredient = this.props.recipeSteps.get(recipeStepIndex).get('outputIngredients').get(outputIngredientIndex);
+    sweetAlert({
+      title: `Remove ${outputIngredient.get('name')}?`,
+      text: 'Please double check!',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#DD6B55',
+      confirmButtonText: 'Remove it!',
+      closeOnConfirm: true
+    }, () => {
+      removeRecipeStepOutputIngredient(recipeStepIndex, outputIngredientIndex);
+    });
+  }
+
   render() {
     const { currentStep, recipeName, recipeSummary, recipeSteps } = this.props;
     const styles = require('./NewRecipe.scss');
@@ -169,7 +229,12 @@ export default class NewRecipe extends Component {
                   return (
                     <li className={styles.recipeStepContainer} key={recipeStepIndex}>
                       <div>
-                        <h4>Step {recipeStepIndex + 1}</h4>
+                        <h4>
+                          <span>Step {recipeStepIndex + 1}</span>
+                          {recipeSteps.size > 1 && (
+                            <button type="button" className={styles.removeStep} onClick={this.handleClickRemoveRecipeStep.bind(this, recipeStepIndex)}>Remove</button>
+                          )}
+                        </h4>
                       </div>
                       <div className={styles.inputIngredientsContainer}>
                         <label>Which ingredients do you need for this step?</label>
@@ -180,7 +245,8 @@ export default class NewRecipe extends Component {
                             const portionUnit = inputIngredient.get('portionUnit');
                             return (
                               <li className={styles.inputIngredientContainer} key={inputIngredientIndex}>
-                                <IngredientCard name={name} portionValue={portionValue} portionUnit={portionUnit} />
+                                <IngredientCard name={name} portionValue={portionValue} portionUnit={portionUnit}/>
+                                <button type="button" className={styles.removeInputIngredient} onClick={this.handleClickRemoveInputIngredient.bind(this, recipeStepIndex, inputIngredientIndex)}>Remove</button>
                               </li>
                             );
                           })}
@@ -193,7 +259,7 @@ export default class NewRecipe extends Component {
                       </div>
                       <div className={styles.methodContainer}>
                         <label>What do you do with the ingredients?</label>
-                        <input type="text" className={styles.method} placeholder="e.g. Slice" value={method} onChange={this.handleChangeRecipeStepMethod.bind(this, recipeStepIndex)} />
+                        <input type="text" className={styles.method} placeholder="Slice, Fry, Stir, etc." value={method} onChange={this.handleChangeRecipeStepMethod.bind(this, recipeStepIndex)} />
                       </div>
                       <div className={styles.outputIngredientsContainer}>
                         <label>What gets produced from this step?</label>
@@ -205,6 +271,7 @@ export default class NewRecipe extends Component {
                             return (
                               <li className={styles.outputIngredientContainer} key={outputIngredientIndex}>
                                 <IngredientCard name={name} portionValue={portionValue} portionUnit={portionUnit} />
+                                <button type="button" className={styles.removeOutputIngredient} onClick={this.handleClickRemoveOutputIngredient.bind(this, recipeStepIndex, outputIngredientIndex)}>Remove</button>
                               </li>
                             );
                           })}
@@ -218,8 +285,8 @@ export default class NewRecipe extends Component {
                     </li>
                   );
                 })}
-                <div className={styles.addAnotherStepContainer}>
-                  <button type="button" className={styles.addAnotherStep}>Add another step</button>
+                <div className={styles.addStepContainer}>
+                  <button type="button" className={styles.addStep} onClick={this.handleClickAddRecipeStep}>Add another step</button>
                 </div>
               </ul>
               <div className={styles.buttonsContainer}>

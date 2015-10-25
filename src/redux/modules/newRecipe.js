@@ -154,7 +154,7 @@ export function addRecipeStepInputIngredient(recipeStepIndex, inputIngredient) {
 }
 
 export function removeRecipeStepInputIngredient(recipeStepIndex, inputIngredientIndex) {
-  return { type: ADD_RECIPE_STEP_INPUT_INGREDIENT, recipeStepIndex, inputIngredientIndex };
+  return { type: REMOVE_RECIPE_STEP_INPUT_INGREDIENT, recipeStepIndex, inputIngredientIndex };
 }
 
 export function setRecipeStepMethod(recipeStepIndex, method) {

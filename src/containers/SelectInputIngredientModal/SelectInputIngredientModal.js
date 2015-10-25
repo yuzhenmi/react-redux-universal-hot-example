@@ -5,6 +5,8 @@ import YumferClient from 'apis/YumferClient';
 import Immutable from 'immutable';
 import { connect } from 'react-redux';
 import * as modalActions from 'redux/modules/modal';
+import classNames from 'classnames';
+import IngredientCard from 'components/IngredientCard';
 let sweetAlert;
 if (__CLIENT__) {
   sweetAlert = require('sweetalert');
@@ -109,35 +111,29 @@ export default class SelectInputIngredientModal extends Component {
           <div className={styles.searchContainer}>
             <label>I need...</label>
             <input type="text" className={styles.searchTerm} placeholder="Potato, Sugar, Milk, etc." onChange={this.handleChangeSearchTerm} />
-          </div>
-          <ul className={styles.searchResultsContainer}>
-            {matchingIngredients.map((ingredient, ingredientIndex) => {
-              const name = ingredient.name;
-              if (name.toLowerCase() === trimmedSearchTerm.toLowerCase()) {
-                searchTermHasExactMatch = true;
-              }
-              return (
-                <li className={styles.searchResultContainer} key={ingredientIndex}>
-                  {name === selectedIngredientName && (
-                    <button type="button" className={styles.selected} onClick={this.handleSelectIngredient.bind(null, ingredient)}>{name}</button>
-                  )}
-                  {name === selectedIngredientName || (
-                    <button type="button" onClick={this.handleSelectIngredient.bind(null, ingredient)}>{name}</button>
-                  )}
+            <ul className={styles.searchResultsContainer}>
+              {matchingIngredients.map((ingredient, ingredientIndex) => {
+                const name = ingredient.name;
+                if (name.toLowerCase() === trimmedSearchTerm.toLowerCase()) {
+                  searchTermHasExactMatch = true;
+                }
+                return (
+                  <li className={styles.searchResultContainer} key={ingredientIndex}>
+                    <button type="button" className={classNames({[styles.selected]: name === selectedIngredientName})} onClick={this.handleSelectIngredient.bind(null, ingredient)}>
+                      <IngredientCard name={name}/>
+                    </button>
+                  </li>
+                );
+              })}
+              {trimmedSearchTerm.length > 0 && !searchTermHasExactMatch && (
+                <li className={styles.searchResultContainer}>
+                  <button type="button" className={classNames({[styles.selected]: trimmedSearchTerm === selectedIngredientName})} onClick={this.handleSelectIngredient.bind(null, { name: trimmedSearchTerm })}>
+                    <IngredientCard name={trimmedSearchTerm}/>
+                  </button>
                 </li>
-              );
-            })}
-            {trimmedSearchTerm.length > 0 && !searchTermHasExactMatch && (
-              <li className={styles.searchResultContainer}>
-                {trimmedSearchTerm.toLowerCase() === selectedIngredientName.toLowerCase() && (
-                  <button type="button" className={styles.selected} onClick={this.handleSelectIngredient.bind(null, { name: trimmedSearchTerm })}>{trimmedSearchTerm}</button>
-                )}
-                {trimmedSearchTerm.toLowerCase() === selectedIngredientName.toLowerCase() || (
-                  <button type="button" onClick={this.handleSelectIngredient.bind(null, { name: trimmedSearchTerm })}>{trimmedSearchTerm}</button>
-                )}
-              </li>
-            )}
-          </ul>
+              )}
+            </ul>
+          </div>
           <div className={styles.portionContainer}>
             <label>In what quantity?</label>
             <input type="text" className={styles.portionValue} placeholder="1, 3, 500, etc." onChange={this.handleChangePortionValue} />

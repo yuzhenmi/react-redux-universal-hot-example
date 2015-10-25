@@ -72,7 +72,7 @@
           border: none;
           color: #fff;
           &.back {
-            background-color: #999;
+            background-color: #b9b9b9;
           }
         }
       }
@@ -125,12 +125,22 @@
             font-size: 1em;
             padding-bottom: 0.5em;
             border-bottom: 1px solid #999;
+            .removeStep {
+              padding: 0;
+              background-color: transparent;
+              border: none;
+              color: #DD6B55;
+              float: right;
+              font-size: 0.85em;
+              position: relative;
+              top: 0.15em;
+            }
           }
           .inputIngredientsContainer, .methodContainer, .outputIngredientsContainer {
             label {
               display: block;
-              font-size: 0.9em;
-              margin-bottom: 0.8em;
+              font-size: 1em;
+              margin-bottom: 0.4em;
               line-height: 1.4;
             }
           }
@@ -138,10 +148,12 @@
             margin-bottom: 1.5em;
             .inputIngredientsList {
               list-style: none;
-              margin: 0;
               padding: 0;
+              margin: -0.4em -0.4em 1.1em;
+              display: flex;
+              flex-wrap: wrap;
               .inputIngredientContainer {
-                display: flex;
+                margin: 0.4em;
                 .addInputIngredient {
                   display: inline-block;
                   width: 5em;
@@ -149,9 +161,21 @@
                   background-color: #fff;
                   border: 1px solid #999;
                   color: #666;
+                  font-size: 1em;
                   span {
                     font-size: 3.6em;
                   }
+                }
+                .removeInputIngredient {
+                  width: 100%;
+                  color: #DD6B55;
+                  background-color: #fff;
+                  font-size: 0.7em;
+                  border: none;
+                  padding: 0.3em 0;
+                  display: block;
+                  border: 1px solid #999;
+                  border-top: none;
                 }
               }
             }
@@ -168,10 +192,12 @@
           .outputIngredientsContainer {
             .outputIngredientsList {
               list-style: none;
-              margin: 0;
               padding: 0;
+              margin: -0.4em -0.4em;
+              display: flex;
+              flex-wrap: wrap;
               .outputIngredientContainer {
-                display: flex;
+                margin: 0.4em;
                 .addOutputIngredient {
                   display: inline-block;
                   width: 5em;
@@ -179,18 +205,30 @@
                   background-color: #fff;
                   border: 1px solid #999;
                   color: #666;
+                  font-size: 1em;
                   span {
                     font-size: 3.6em;
                   }
+                }
+                .removeOutputIngredient {
+                  width: 100%;
+                  color: #DD6B55;
+                  background-color: #fff;
+                  font-size: 0.7em;
+                  border: none;
+                  padding: 0.3em 0;
+                  display: block;
+                  border: 1px solid #999;
+                  border-top: none;
                 }
               }
             }
           }
         }
-        .addAnotherStepContainer {
+        .addStepContainer {
           display: flex;
           justify-content: center;
-          .addAnotherStep {
+          .addStep {
             display: block;
             padding: 0.4em 1.6em;
             font-size: 1.2em;
